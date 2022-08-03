@@ -57,7 +57,7 @@ class QueueStack(Stack):
             task_definition=fargate.task_definition,
             role=fargate.task_definition.task_role,
             container_overrides=ContainerOverride(
-                name='QueueProcessingContainer',
+                container_name='QueueProcessingContainer',
                 command=['echo', '$QUEUE_NAME']
             )
         )
