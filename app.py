@@ -10,6 +10,9 @@ from aws_cdk.aws_ecs_patterns import QueueProcessingFargateService
 
 from aws_cdk.aws_applicationautoscaling import ScalingInterval
 
+from aws_cdk.aws_ec2 import SubnetSelection
+from aws_cdk.aws_ec2 import SubnetType
+
 from aws_cdk.aws_events import Rule
 from aws_cdk.aws_events import Schedule
 
@@ -55,10 +58,15 @@ class QueueStack(Stack):
         one_off_task_target = EcsTask(
             cluster=fargate.cluster,
             task_definition=fargate.task_definition,
-            role=fargate.task_definition.task_role,
-            container_overrides=ContainerOverride(
-                container_name='QueueProcessingContainer',
-                command=['echo', '$QUEUE_NAME']
+            role=fargate.task_definition.execution_role,
+            container_overrides=[
+                ContainerOverride(
+                    container_name='QueueProcessingContainer',
+                    command=['echo', '$QUEUE_NAME']
+                ),
+            ],
+            subnet_selection=SubnetSelection(
+                subnet_type=SubnetType.PUBLIC
             )
         )
 
