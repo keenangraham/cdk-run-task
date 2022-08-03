@@ -10,4 +10,8 @@ COPY req.txt requirements.txt
 
 RUN pip install -r requirements.txt
 
+COPY script.sh script.sh
+
+RUN chmod 755 script.sh
+
 CMD ["python", "command.py"]

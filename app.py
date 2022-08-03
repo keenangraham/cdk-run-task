@@ -58,11 +58,10 @@ class QueueStack(Stack):
         one_off_task_target = EcsTask(
             cluster=fargate.cluster,
             task_definition=fargate.task_definition,
-            role=fargate.task_definition.execution_role,
             container_overrides=[
                 ContainerOverride(
                     container_name='QueueProcessingContainer',
-                    command=['echo', '$QUEUE_NAME']
+                    command=['./script.sh'],
                 ),
             ],
             subnet_selection=SubnetSelection(
@@ -78,7 +77,6 @@ class QueueStack(Stack):
             ),
             targets=[one_off_task_target]
         )
-
 
 
 app = App()
